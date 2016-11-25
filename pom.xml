@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.kreth</groupId>
 	<artifactId>databasedefinition</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>DatabaseDefinition</name>
 	<description>Database createion and definition framework</description>
 
 	<properties>
-		<java-version>1.6</java-version>
+		<java-version>1.8</java-version>
 	</properties>
 
 	<build>

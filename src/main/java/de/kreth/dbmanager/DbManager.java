@@ -13,35 +13,36 @@ public class DbManager {
 	private Database db;
 	private int newVersion;
 	private List<Version> versions;
-	
+
 	public DbManager(Collection<TableDefinition> tables, List<Version> versions, Database db, int newVersion) {
 		tableDefinitions = new HashMap<String, TableDefinition>();
 		this.db = db;
 		this.newVersion = newVersion;
 		this.versions = versions;
-		
-		for(TableDefinition def: tables){
+
+		for (TableDefinition def : tables) {
 			tableDefinitions.put(def.getTableName(), def);
 		}
 
 		checkParamters();
 		sortVersionsAndMakeUnmodifiable();
 	}
-	
+
 	private void checkParamters() {
 		StringBuilder errorMsg = new StringBuilder();
-		if(tableDefinitions.isEmpty())
+		if (tableDefinitions.isEmpty())
 			append(errorMsg, "Parameter tables darf nicht leer sein!");
-		if(db == null)
+		if (db == null)
 			append(errorMsg, "Parameter db darf nicht null sein!");
-		if(newVersion<1)
+		if (newVersion < 1)
 			append(errorMsg, "Parameter newVersion muss >= 1 sein!");
-		if(versions == null)
+		if (versions == null)
 			append(errorMsg, "Liste mit Versionen darf nicht null sein");
-		if(versions != null && versions.get(0).getVersionNr() != 1)
-			append(errorMsg, "Der erste Eintrag muss die Versionsnummer 1 haben! Die Create Table anweisungen für erste Version müssen enthalten sein.");
-		
-		if(errorMsg.length()>0)
+		if (versions != null && versions.get(0).getVersionNr() != 1)
+			append(errorMsg,
+					"Der erste Eintrag muss die Versionsnummer 1 haben! Die Create Table anweisungen für erste Version müssen enthalten sein.");
+
+		if (errorMsg.length() > 0)
 			throw new IllegalArgumentException(errorMsg.toString());
 	}
 
@@ -51,66 +52,68 @@ public class DbManager {
 
 			@Override
 			public int compare(Version o1, Version o2) {
-				if(o1.getVersionNr() == o2.getVersionNr())
-					throw new IllegalStateException("Es gibt zwei Einträge mit der selben Version! Es muss eine eindeutige Reihenfolge gegeben sein!");
-				
+				if (o1.getVersionNr() == o2.getVersionNr())
+					throw new IllegalStateException(
+							"Es gibt zwei Einträge mit der selben Version! Es muss eine eindeutige Reihenfolge gegeben sein!");
+
 				return o1.getVersionNr() - o2.getVersionNr();
 			}
 		});
-		
+
 		versions = Collections.unmodifiableList(versions);
-		
+
 	}
 
-	private void append(StringBuilder bld, String msg){
-		if(bld.length()>0)
+	private void append(StringBuilder bld, String msg) {
+		if (bld.length() > 0)
 			bld.append("\n");
 		bld.append(msg);
 	}
-	
+
 	public Map<String, TableDefinition> getTableDefinitions() {
 		return Collections.unmodifiableMap(tableDefinitions);
 	}
 
 	public boolean needUpdate() {
-		return db.getVersion()<newVersion;
+		return db.getVersion() < newVersion;
 	}
 
 	/**
-	 * Führt die nötigen Befehle aus um die aktuelle Version zu erreichen. <br />
+	 * Führt die nötigen Befehle aus um die aktuelle Version zu erreichen.
+	 * <br />
+	 * 
 	 * @throws SQLException
 	 */
 	public void execute() throws SQLException {
 		int currentVersion = db.getVersion();
 		int from = 0;
-		
+
 		for (int i = from; i < versions.size(); i++) {
 			Version v = versions.get(i);
-			
-			if(v.getVersionNr()>currentVersion)
+
+			if (v.getVersionNr() > currentVersion)
 				executeStatements(v.getSqlStms());
 		}
 	}
 
 	private void executeStatements(List<String> sqlStms) throws SQLException {
-		for(String sql : sqlStms){
+		for (String sql : sqlStms) {
 			db.execSQL(sql);
 		}
 	}
 
-
 	public static String createSqlStatement(TableDefinition def) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("CREATE TABLE ").append(def.getTableName()).append(" (\n");
-		
+
 		boolean first = true;
-		for(ColumnDefinition col : def.getColumns()) {
-			if(!first) {
+		for (ColumnDefinition col : def.getColumns()) {
+			if (!first) {
 				sql.append(",\n");
 			}
-			
+
 			first = false;
-			
+
 			sql.append("\t").append(col.getColumnName()).append(" ");
 			switch (col.getType()) {
 			case BLOB:
@@ -136,9 +139,9 @@ public class DbManager {
 			case TEXT:
 			case VARCHAR255:
 				sql.append("VARCHAR(255)");
-				break;			
+				break;
 			}
-			if(col.getColumnParameters() != null && !col.getColumnParameters().isEmpty()){
+			if (col.getColumnParameters() != null && !col.getColumnParameters().isEmpty()) {
 				sql.append(" ").append(col.getColumnParameters());
 			}
 			sql.append("\n");

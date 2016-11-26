@@ -103,6 +103,7 @@ public class DbManager {
 	}
 
 	public static String createSqlStatement(TableDefinition def) {
+
 		StringBuilder sql = new StringBuilder();
 		sql.append("CREATE TABLE ").append(def.getTableName()).append(" (\n");
 
@@ -115,38 +116,70 @@ public class DbManager {
 			first = false;
 
 			sql.append("\t").append(col.getColumnName()).append(" ");
-			switch (col.getType()) {
-			case BLOB:
-				throw new IllegalArgumentException("Column Type " + col.getType() + " not supported");
-			case BOOLEAN:
-				sql.append(col.getType().name());
-				break;
-			case DATETIME:
-				sql.append("DATETIME");
-				break;
-			case INTEGER:
-				sql.append(col.getType().name());
-				break;
-			case REAL:
-				sql.append("DOUBLE");
-				break;
-			case VARCHAR100:
-				sql.append("VARCHAR(100)");
-				break;
-			case VARCHAR25:
-				sql.append("VARCHAR(25)");
-				break;
-			case TEXT:
-			case VARCHAR255:
-				sql.append("VARCHAR(255)");
-				break;
-			}
+
+			appendType(sql, col);
+
 			if (col.getColumnParameters() != null && !col.getColumnParameters().isEmpty()) {
 				sql.append(" ").append(col.getColumnParameters());
 			}
-			sql.append("\n");
 		}
+
+		sql.append("\n");
 		sql.append(")");
+		return sql.toString();
+	}
+
+	private static void appendType(StringBuilder sql, ColumnDefinition col) {
+
+		switch (col.getType()) {
+		case BLOB:
+			throw new IllegalArgumentException("Column Type " + col.getType() + " not supported");
+		case BOOLEAN:
+			sql.append(col.getType().name());
+			break;
+		case DATETIME:
+			sql.append("DATETIME");
+			break;
+		case INTEGER:
+			sql.append(col.getType().name());
+			break;
+		case REAL:
+			sql.append("DOUBLE");
+			break;
+		case VARCHAR100:
+			sql.append("VARCHAR(100)");
+			break;
+		case VARCHAR25:
+			sql.append("VARCHAR(25)");
+			break;
+		case TEXT:
+		case VARCHAR255:
+			sql.append("VARCHAR(255)");
+			break;
+		}
+	}
+
+	public static String createSqlAddColumns(TableDefinition current, Collection<ColumnDefinition> columnsToAdd) {
+
+		StringBuilder sql = new StringBuilder();
+		sql.append("ALTER TABLE ").append(current.getTableName());
+
+		boolean first = true;
+		for (ColumnDefinition col : columnsToAdd) {
+
+			if (!first) {
+				sql.append(",");
+			}
+
+			first = false;
+			sql.append("\n\tADD COLUMN ").append(col.getColumnName()).append(" ");
+			appendType(sql, col);
+
+			if (col.getColumnParameters() != null && !col.getColumnParameters().isEmpty()) {
+				sql.append(" ").append(col.getColumnParameters());
+			}
+		}
+		sql.append(";");
 		return sql.toString();
 	}
 }

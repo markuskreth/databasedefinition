@@ -9,7 +9,7 @@
 	<description>Database createion and definition framework</description>
 
 	<properties>
-		<java-version>1.8</java-version>
+		<java-version>1.6</java-version>
 	</properties>
 
 	<build>

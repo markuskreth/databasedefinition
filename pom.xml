@@ -9,7 +9,7 @@
 	<description>Database createion and definition framework</description>
 
 	<properties>
-		<java-version>1.6</java-version>
+		<java-version>1.8</java-version>
 	</properties>
 
 	<build>
@@ -28,4 +28,11 @@
 		</plugins>
 	</build>
 	
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.7</version>
+		</dependency>
+	</dependencies>
 </project>

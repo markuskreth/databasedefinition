@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.kreth</groupId>
 	<artifactId>databasedefinition</artifactId>
-	<version>0.0.3</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<name>DatabaseDefinition</name>
 	<description>Database creation and definition framework</description>
 
@@ -31,13 +31,6 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.5.2</version>
 				<configuration>
-					<goals>install exec:exec</goals>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.5.2</version>
-				<configuration>
 					<goals>install</goals>
 				</configuration>
 			</plugin>
@@ -55,6 +48,5 @@
 		<url>https://github.com/markuskreth/databasedefinition</url>
 		<connection>scm:git:git@github.com:markuskreth/databasedefinition.git</connection>
 		<developerConnection>scm:git:git@github.com:markuskreth/databasedefinition.git</developerConnection>
-	  <tag>databasedefinition-0.0.3</tag>
-  </scm>
+	</scm>
 </project>

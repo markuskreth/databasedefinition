@@ -8,6 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Manages Tables of one Database definition.
+ * 
+ * @author markus
+ *
+ */
 public class DbManager {
 	private Map<String, TableDefinition> tableDefinitions;
 	private Database db;
@@ -79,8 +85,7 @@ public class DbManager {
 	}
 
 	/**
-	 * Führt die nötigen Befehle aus um die aktuelle Version zu erreichen.
-	 * <br />
+	 * Führt die nötigen Befehle aus um die aktuelle Version zu erreichen. <br>
 	 * 
 	 * @throws SQLException
 	 */

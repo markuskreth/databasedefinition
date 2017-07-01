@@ -6,8 +6,10 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Immutable 
- * <br /> Der Liste von Spalten wird <i>immer</i> eine Spalte mit Namen {@link #COLUMN_ID_NAME} hinzugefügt, die als Primärschlüssel dient.
+ * Immutable <br>
+ * Der Liste von Spalten wird <i>immer</i> eine Spalte mit Namen
+ * {@link #COLUMN_ID_NAME} hinzugefügt, die als Primärschlüssel dient.
+ * 
  * @author markus
  *
  */
@@ -15,8 +17,8 @@ public class TableDefinition {
 	public static final String COLUMN_ID_NAME = "_id";
 	private String tableName;
 	private Collection<ColumnDefinition> columns;
-	
-	public TableDefinition(String tableName,Collection<ColumnDefinition> columns) {
+
+	public TableDefinition(String tableName, Collection<ColumnDefinition> columns) {
 		super();
 		this.tableName = tableName;
 		ColumnDefinition id = new ColumnDefinition(DataType.INTEGER, COLUMN_ID_NAME, "primary key AUTO_INCREMENT");

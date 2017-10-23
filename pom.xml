@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.kreth</groupId>
 	<artifactId>databasedefinition</artifactId>
-	<version>0.0.4</version>
+	<version>0.0.4-SNAPSHOT</version>
 	<name>DatabaseDefinition</name>
 	<description>Database creation and definition framework</description>
 
@@ -43,8 +43,8 @@
 	</dependencies>
 	<scm>
 		<url>https://github.com/markuskreth/databasedefinition</url>
-		<connection>scm:git:git@github.com:markuskreth/databasedefinition.git</connection>
-		<developerConnection>scm:git:git@github.com:markuskreth/databasedefinition.git</developerConnection>
+		<connection>scm:git:https://github.com:markuskreth/databasedefinition.git</connection>
+		<developerConnection>scm:git:https://github.com:markuskreth/databasedefinition.git</developerConnection>
 	  <tag>databasedefinition-0.0.4</tag>
   </scm>
 </project>

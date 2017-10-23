@@ -30,4 +30,9 @@ public class ColumnDefinition {
 	public String getColumnParameters() {
 		return columnParameters;
 	}
+	
+	@Override
+	public String toString() {
+		return columnName + "(" + type + ")";
+	}
 }

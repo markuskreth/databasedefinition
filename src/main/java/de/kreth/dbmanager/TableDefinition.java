@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Immutable <br>
@@ -36,4 +37,8 @@ public class TableDefinition {
 		return columns;
 	}
 
+	@Override
+	public String toString() {
+		return tableName + "[" + String.join(",", columns.stream().map(m -> m.toString()).collect(Collectors.toList())) + "]";
+	}
 }

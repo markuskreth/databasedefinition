@@ -43,8 +43,8 @@
 	</dependencies>
 	<scm>
 		<url>https://github.com/markuskreth/databasedefinition</url>
-		<connection>scm:git:https://github.com:markuskreth/databasedefinition.git</connection>
-		<developerConnection>scm:git:https://github.com:markuskreth/databasedefinition.git</developerConnection>
+		<connection>scm:git:https://github.com/markuskreth/databasedefinition.git</connection>
+		<developerConnection>scm:git:https://github.com/markuskreth/databasedefinition.git</developerConnection>
 	  <tag>databasedefinition-0.0.4</tag>
   </scm>
 </project>

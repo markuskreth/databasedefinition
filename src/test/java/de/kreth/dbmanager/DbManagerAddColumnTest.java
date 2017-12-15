@@ -19,9 +19,7 @@ public class DbManagerAddColumnTest {
 
 		TableDefinition def = new TableDefinition("testtable", new ArrayList<ColumnDefinition>());
 
-		List<ColumnDefinition> columns = new ArrayList<ColumnDefinition>();
-		columns.add(new ColumnDefinition(DataType.DATETIME, "deleted", " DEFAULT null"));
-		String sql = DbManager.createSqlAddColumns(def, columns);
+		String sql = DbManager.createSqlAddColumns(def, new ColumnDefinition(DataType.DATETIME, "deleted", " DEFAULT null"));
 		assertEquals("ALTER TABLE testtable\n\tADD COLUMN deleted DATETIME  DEFAULT null;", sql);
 	}
 
@@ -33,7 +31,7 @@ public class DbManagerAddColumnTest {
 		List<ColumnDefinition> columns = new ArrayList<ColumnDefinition>();
 		columns.add(new ColumnDefinition(DataType.DATETIME, "deleted", " DEFAULT null"));
 		columns.add(new ColumnDefinition(DataType.VARCHAR25, "theType"));
-		String sql = DbManager.createSqlAddColumns(def, columns);
+		String sql = DbManager.createSqlAddColumns(def, columns.toArray(new ColumnDefinition[]{}));
 		assertEquals(
 				"ALTER TABLE testtable\n\tADD COLUMN deleted DATETIME  DEFAULT null,\n\tADD COLUMN theType VARCHAR(25);",
 				sql);

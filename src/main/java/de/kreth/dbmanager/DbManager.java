@@ -164,7 +164,7 @@ public class DbManager {
 		}
 	}
 
-	public static String createSqlAddColumns(TableDefinition current, Collection<ColumnDefinition> columnsToAdd) {
+	public static String createSqlAddColumns(TableDefinition current, ColumnDefinition... columnsToAdd) {
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("ALTER TABLE ").append(current.getTableName());
@@ -178,6 +178,30 @@ public class DbManager {
 
 			first = false;
 			sql.append("\n\tADD COLUMN ").append(col.getColumnName()).append(" ");
+			appendType(sql, col);
+
+			if (col.getColumnParameters() != null && !col.getColumnParameters().isEmpty()) {
+				sql.append(" ").append(col.getColumnParameters());
+			}
+		}
+		sql.append(";");
+		return sql.toString();
+	}
+	
+	public static String createSqlDropColumns(TableDefinition current, ColumnDefinition... columnsToDrop) {
+
+		StringBuilder sql = new StringBuilder();
+		sql.append("ALTER TABLE ").append(current.getTableName());
+
+		boolean first = true;
+		for (ColumnDefinition col : columnsToDrop) {
+
+			if (!first) {
+				sql.append(",");
+			}
+
+			first = false;
+			sql.append("\n\tDROP COLUMN ").append(col.getColumnName()).append(" ");
 			appendType(sql, col);
 
 			if (col.getColumnParameters() != null && !col.getColumnParameters().isEmpty()) {

@@ -108,6 +108,7 @@ public class DbManager {
 	}
 
 	public static String createSqlStatement(TableDefinition def) {
+		assert(def != null);
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("CREATE TABLE ").append(def.getTableName()).append(" (\n");
@@ -165,7 +166,7 @@ public class DbManager {
 	}
 
 	public static String createSqlAddColumns(TableDefinition current, ColumnDefinition... columnsToAdd) {
-
+		assert(current != null);
 		StringBuilder sql = new StringBuilder();
 		sql.append("ALTER TABLE ").append(current.getTableName());
 
@@ -189,6 +190,7 @@ public class DbManager {
 	}
 	
 	public static String createSqlDropColumns(TableDefinition current, ColumnDefinition... columnsToDrop) {
+		assert(current != null);
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("ALTER TABLE ").append(current.getTableName());
@@ -201,12 +203,8 @@ public class DbManager {
 			}
 
 			first = false;
-			sql.append("\n\tDROP COLUMN ").append(col.getColumnName()).append(" ");
-			appendType(sql, col);
+			sql.append("\n\tDROP COLUMN ").append(col.getColumnName());
 
-			if (col.getColumnParameters() != null && !col.getColumnParameters().isEmpty()) {
-				sql.append(" ").append(col.getColumnParameters());
-			}
 		}
 		sql.append(";");
 		return sql.toString();

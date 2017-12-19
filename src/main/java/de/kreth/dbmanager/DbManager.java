@@ -129,7 +129,12 @@ public class DbManager {
 				sql.append(" ").append(col.getColumnParameters());
 			}
 		}
+		for(UniqueConstraint uni: def.getUnique()) {
 
+			sql.append(",\n\tCONSTRAINT UNIQUE (");
+			sql.append(String.join(",", uni.getNames()));
+			sql.append(")");
+		}
 		sql.append("\n");
 		sql.append(")");
 		return sql.toString();

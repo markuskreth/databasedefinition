@@ -1,6 +1,7 @@
 package de.kreth.dbmanager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -16,17 +17,18 @@ import java.util.stream.Collectors;
  */
 public class TableDefinition {
 	public static final String COLUMN_ID_NAME = "_id";
-	private String tableName;
-	private Collection<ColumnDefinition> columns;
+	private final String tableName;
+	private final Collection<ColumnDefinition> columns;
+	private Collection<UniqueConstraint> unique;
 
-	public TableDefinition(String tableName, Collection<ColumnDefinition> columns) {
-		super();
+	public TableDefinition(String tableName, List<ColumnDefinition> columns, UniqueConstraint... unique) {
 		this.tableName = tableName;
 		ColumnDefinition id = new ColumnDefinition(DataType.INTEGER, COLUMN_ID_NAME, "primary key AUTO_INCREMENT");
 		List<ColumnDefinition> def = new ArrayList<ColumnDefinition>();
 		def.add(id);
 		def.addAll(columns);
 		this.columns = Collections.unmodifiableCollection(def);
+		this.unique = Collections.unmodifiableCollection(Arrays.asList(unique));
 	}
 
 	public String getTableName() {
@@ -37,6 +39,10 @@ public class TableDefinition {
 		return columns;
 	}
 
+	public Collection<UniqueConstraint> getUnique() {
+		return unique;
+	}
+	
 	@Override
 	public String toString() {
 		return tableName + "[" + String.join(",", columns.stream().map(m -> m.toString()).collect(Collectors.toList())) + "]";

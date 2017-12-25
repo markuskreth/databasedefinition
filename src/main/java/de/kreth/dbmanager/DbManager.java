@@ -107,8 +107,16 @@ public class DbManager {
 		}
 	}
 
+	public static String createUniqueConstraint(TableDefinition def, UniqueConstraint constraint) {
+		StringBuilder sql = new StringBuilder("ALTER TABLE ");
+		sql.append(def.getTableName()).append(" ADD CONSTRAINT UNIQUE_").append(String.join("_", constraint.getNames()))
+				.append(" UNIQUE (");
+		sql.append(String.join(", ", constraint.getNames())).append(")");
+		return sql.toString();
+	}
+
 	public static String createSqlStatement(TableDefinition def) {
-		assert(def != null);
+		assert (def != null);
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("CREATE TABLE ").append(def.getTableName()).append(" (\n");
@@ -129,7 +137,7 @@ public class DbManager {
 				sql.append(" ").append(col.getColumnParameters());
 			}
 		}
-		for(UniqueConstraint uni: def.getUnique()) {
+		for (UniqueConstraint uni : def.getUnique()) {
 
 			sql.append(",\n\tCONSTRAINT UNIQUE (");
 			sql.append(String.join(",", uni.getNames()));
@@ -171,7 +179,7 @@ public class DbManager {
 	}
 
 	public static String createSqlAddColumns(TableDefinition current, ColumnDefinition... columnsToAdd) {
-		assert(current != null);
+		assert (current != null);
 		StringBuilder sql = new StringBuilder();
 		sql.append("ALTER TABLE ").append(current.getTableName());
 
@@ -193,9 +201,9 @@ public class DbManager {
 		sql.append(";");
 		return sql.toString();
 	}
-	
+
 	public static String createSqlDropColumns(TableDefinition current, ColumnDefinition... columnsToDrop) {
-		assert(current != null);
+		assert (current != null);
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("ALTER TABLE ").append(current.getTableName());

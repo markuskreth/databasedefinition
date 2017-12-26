@@ -25,13 +25,6 @@
 					<showDeprecation>true</showDeprecation>
 				</configuration>
 			</plugin>
-			<plugin>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.5.2</version>
-				<!-- <configuration> -->
-				<!-- <goals>install</goals> -->
-				<!-- </configuration> -->
-			</plugin>
 		</plugins>
 	</build>
 
@@ -59,6 +52,5 @@
 		<url>https://github.com/markuskreth/databasedefinition</url>
 		<connection>scm:git:https://github.com/markuskreth/databasedefinition.git</connection>
 		<developerConnection>scm:git:https://github.com/markuskreth/databasedefinition.git</developerConnection>
-		<tag>databasedefinition-0.0.4</tag>
 	</scm>
 </project>

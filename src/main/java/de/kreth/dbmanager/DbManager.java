@@ -20,7 +20,8 @@ public class DbManager {
 	private int newVersion;
 	private List<Version> versions;
 
-	public DbManager(Collection<TableDefinition> tables, List<Version> versions, Database db, int newVersion) {
+	public DbManager(Collection<TableDefinition> tables, List<Version> versions,
+			Database db, int newVersion) {
 		tableDefinitions = new HashMap<String, TableDefinition>();
 		this.db = db;
 		this.newVersion = newVersion;
@@ -107,8 +108,18 @@ public class DbManager {
 		}
 	}
 
+	public static String createUniqueConstraint(TableDefinition def,
+			UniqueConstraint constraint) {
+		StringBuilder sql = new StringBuilder("ALTER TABLE ");
+		sql.append(def.getTableName()).append(" ADD CONSTRAINT UNIQUE_")
+				.append(String.join("_", constraint.getNames()))
+				.append(" UNIQUE (");
+		sql.append(String.join(", ", constraint.getNames())).append(")");
+		return sql.toString();
+	}
+
 	public static String createSqlStatement(TableDefinition def) {
-		assert(def != null);
+		assert (def != null);
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("CREATE TABLE ").append(def.getTableName()).append(" (\n");
@@ -125,53 +136,51 @@ public class DbManager {
 
 			appendType(sql, col);
 
-			if (col.getColumnParameters() != null && !col.getColumnParameters().isEmpty()) {
+			if (col.getColumnParameters() != null
+					&& !col.getColumnParameters().isEmpty()) {
 				sql.append(" ").append(col.getColumnParameters());
 			}
 		}
-		for(UniqueConstraint uni: def.getUnique()) {
-
-			sql.append(",\n\tCONSTRAINT UNIQUE (");
-			sql.append(String.join(",", uni.getNames()));
-			sql.append(")");
-		}
 		sql.append("\n");
 		sql.append(")");
+
 		return sql.toString();
 	}
 
 	private static void appendType(StringBuilder sql, ColumnDefinition col) {
 
 		switch (col.getType()) {
-		case BLOB:
-			throw new IllegalArgumentException("Column Type " + col.getType() + " not supported");
-		case BOOLEAN:
-			sql.append(col.getType().name());
-			break;
-		case DATETIME:
-			sql.append("DATETIME");
-			break;
-		case INTEGER:
-			sql.append(col.getType().name());
-			break;
-		case REAL:
-			sql.append("DOUBLE");
-			break;
-		case VARCHAR100:
-			sql.append("VARCHAR(100)");
-			break;
-		case VARCHAR25:
-			sql.append("VARCHAR(25)");
-			break;
-		case TEXT:
-		case VARCHAR255:
-			sql.append("VARCHAR(255)");
-			break;
+			case BLOB :
+				throw new IllegalArgumentException(
+						"Column Type " + col.getType() + " not supported");
+			case BOOLEAN :
+				sql.append(col.getType().name());
+				break;
+			case DATETIME :
+				sql.append("DATETIME");
+				break;
+			case INTEGER :
+				sql.append(col.getType().name());
+				break;
+			case REAL :
+				sql.append("DOUBLE");
+				break;
+			case VARCHAR100 :
+				sql.append("VARCHAR(100)");
+				break;
+			case VARCHAR25 :
+				sql.append("VARCHAR(25)");
+				break;
+			case TEXT :
+			case VARCHAR255 :
+				sql.append("VARCHAR(255)");
+				break;
 		}
 	}
 
-	public static String createSqlAddColumns(TableDefinition current, ColumnDefinition... columnsToAdd) {
-		assert(current != null);
+	public static String createSqlAddColumns(TableDefinition current,
+			ColumnDefinition... columnsToAdd) {
+		assert (current != null);
 		StringBuilder sql = new StringBuilder();
 		sql.append("ALTER TABLE ").append(current.getTableName());
 
@@ -183,19 +192,22 @@ public class DbManager {
 			}
 
 			first = false;
-			sql.append("\n\tADD COLUMN ").append(col.getColumnName()).append(" ");
+			sql.append("\n\tADD COLUMN ").append(col.getColumnName())
+					.append(" ");
 			appendType(sql, col);
 
-			if (col.getColumnParameters() != null && !col.getColumnParameters().isEmpty()) {
+			if (col.getColumnParameters() != null
+					&& !col.getColumnParameters().isEmpty()) {
 				sql.append(" ").append(col.getColumnParameters());
 			}
 		}
 		sql.append(";");
 		return sql.toString();
 	}
-	
-	public static String createSqlDropColumns(TableDefinition current, ColumnDefinition... columnsToDrop) {
-		assert(current != null);
+
+	public static String createSqlDropColumns(TableDefinition current,
+			ColumnDefinition... columnsToDrop) {
+		assert (current != null);
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("ALTER TABLE ").append(current.getTableName());

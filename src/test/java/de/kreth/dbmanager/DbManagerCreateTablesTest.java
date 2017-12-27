@@ -62,7 +62,7 @@ public class DbManagerCreateTablesTest {
 	}
 
 	@Test
-	public void testCreateTable2ColumnsUnique() {
+	public void test2ColumnsUnique() {
 		List<ColumnDefinition> columns = new ArrayList<ColumnDefinition>();
 
 		columns.add(
@@ -72,15 +72,12 @@ public class DbManagerCreateTablesTest {
 		UniqueConstraint unique = new UniqueConstraint(columns.get(0),
 				columns.get(1));
 		TableDefinition def = new TableDefinition("testtable",
-				DatabaseType.MYSQL, columns, unique);
-		String sql = DbManager.createSqlStatement(def);
+				DatabaseType.MYSQL, columns);
+		String sql = DbManager.createUniqueConstraint(def, unique);
 
 		assertNotNull(sql);
 
-		String expected = "CREATE TABLE testtable (\n"
-				+ "	id INTEGER primary key AUTO_INCREMENT,\n"
-				+ "	name VARCHAR(100)  NOT NULL,\n" + "	theDate DATETIME,\n"
-				+ "	CONSTRAINT UNIQUE (name,theDate)\n" + ")";
+		String expected = "ALTER TABLE testtable ADD CONSTRAINT UNIQUE_name_theDate UNIQUE (name, theDate)";
 
 		assertEquals(expected, sql);
 	}

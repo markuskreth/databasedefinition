@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 
 public class DbManagerCreateTablesTest {
@@ -82,9 +81,5 @@ public class DbManagerCreateTablesTest {
 		assertEquals(expected, sql);
 	}
 
-	@Before
-	public void setUp() throws Exception {
-	}
 }
 
-// ~ Formatted by Jindent --- http://www.jindent.com

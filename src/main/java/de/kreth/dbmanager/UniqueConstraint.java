@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class UniqueConstraint {
+public class UniqueConstraint implements Constraint {
 	private List<String> names = new ArrayList<>();
 	
 	public UniqueConstraint(ColumnDefinition... defs) {
